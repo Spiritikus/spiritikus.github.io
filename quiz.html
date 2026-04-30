@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест по химии</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #eef2f8;
+            padding: 2rem 1rem;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #e0e7ef;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #1a5d77;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: 0.2s;
+        }
+        .back-link:hover { background: #cbdae6; }
+        h1 {
+            font-size: 2rem;
+            color: #0f3b4f;
+            margin-bottom: 0.5rem;
+        }
+        .question-card {
+            background: #f9fbfe;
+            border-radius: 1.2rem;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2edf2;
+        }
+        .question-text {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-left: 1rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+        input[type="radio"] { width: 18px; height: 18px; cursor: pointer; accent-color: #2c7da0; }
+        .btn-submit {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            cursor: pointer;
+            width: 100%;
+            margin: 1rem 0;
+            transition: 0.2s;
+        }
+        .btn-submit:hover { background: #1f6683; }
+        .result-area {
+            background: #eef3fc;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        footer { text-align: center; margin-top: 1.5rem; font-size: 0.8rem; color: #5a6e7a; }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Вернуться на главную</a>
+    <h1><i class="fas fa-vial"></i> Проверьте знания</h1>
+    <p style="margin-bottom: 1.5rem;">Выберите правильные варианты ответов.</p>
 
+    <form id="quizForm">
+        <!-- Вопрос 1 -->
+        <div class="question-card">
+            <div class="question-text">1. Какой химический элемент обозначается символом "Na"?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q1" value="0"> Золото</label>
+                <label class="option"><input type="radio" name="q1" value="1"> Натрий</label>
+                <label class="option"><input type="radio" name="q1" value="0"> Азот</label>
+                <label class="option"><input type="radio" name="q1" value="0"> Неон</label>
+            </div>
+        </div>
+        <!-- Вопрос 2 -->
+        <div class="question-card">
+            <div class="question-text">2. Какая кислота содержится в желудочном соке?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q2" value="1"> Соляная (HCl)</label>
+                <label class="option"><input type="radio" name="q2" value="0"> Серная (H₂SO₄)</label>
+                <label class="option"><input type="radio" name="q2" value="0"> Азотная (HNO₃)</label>
+                <label class="option"><input type="radio" name="q2" value="0"> Уксусная (CH₃COOH)</label>
+            </div>
+        </div>
+        <!-- Вопрос 3 -->
+        <div class="question-card">
+            <div class="question-text">3. Реакция CaCO₃ → CaO + CO₂ относится к типу:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q3" value="0"> Соединение</label>
+                <label class="option"><input type="radio" name="q3" value="0"> Замещение</label>
+                <label class="option"><input type="radio" name="q3" value="1"> Разложение</label>
+                <label class="option"><input type="radio" name="q3" value="0"> Обмен</label>
+            </div>
+        </div>
+        <!-- Вопрос 4 -->
+        <div class="question-card">
+            <div class="question-text">4. Число Авогадро (частиц в 1 моль) равно:</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q4" value="0"> 3,14·10²³</label>
+                <label class="option"><input type="radio" name="q4" value="1"> 6,022·10²³</label>
+                <label class="option"><input type="radio" name="q4" value="0"> 1,602·10⁻¹⁹</label>
+                <label class="option"><input type="radio" name="q4" value="0"> 8,314</label>
+            </div>
+        </div>
+        <!-- Вопрос 5 -->
+        <div class="question-card">
+            <div class="question-text">5. Какой индикатор в щелочной среде становится малиновым?</div>
+            <div class="options">
+                <label class="option"><input type="radio" name="q5" value="0"> Лакмус</label>
+                <label class="option"><input type="radio" name="q5" value="1"> Фенолфталеин</label>
+                <label class="option"><input type="radio" name="q5" value="0"> Метилоранж</label>
+                <label class="option"><input type="radio" name="q5" value="0"> Бромтимоловый синий</label>
+            </div>
+        </div>
+        <button type="button" class="btn-submit" id="checkBtn"><i class="fas fa-check-circle"></i> Проверить ответы</button>
+    </form>
+    <div id="resultBlock" class="result-area"></div>
+    <footer>❤️ После проверки вы увидите свой результат.</footer>
+</div>
+
+<script>
+    const answers = { q1: '1', q2: '1', q3: '1', q4: '1', q5: '1' };
+    document.getElementById('checkBtn').addEventListener('click', function() {
+        let score = 0;
+        for (let i = 1; i <= 5; i++) {
+            const selected = document.querySelector(`input[name="q${i}"]:checked`);
+            if (selected && selected.value === answers[`q${i}`]) score++;
+        }
+        const resultDiv = document.getElementById('resultBlock');
+        if (score === 5) resultDiv.innerHTML = '<i class="fas fa-star" style="color:gold;"></i> Отлично! 5 из 5. Вы знаток химии!';
+        else if (score >= 3) resultDiv.innerHTML = `<i class="fas fa-thumbs-up"></i> Результат: ${score} из 5. Неплохо, но повторите теорию.`;
+        else resultDiv.innerHTML = `<i class="fas fa-book-open"></i> Правильных ответов: ${score} из 5. Рекомендуем вернуться на главную страницу и изучить основы.`;
+    });
+</script>
+</body>
+</html>
