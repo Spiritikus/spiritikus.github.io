@@ -121,6 +121,31 @@
             transform: scale(1.02);
         }
 
+        /* Кнопка перехода на тесты — уникальный стиль */
+        .test-jumbo-btn {
+            background: linear-gradient(95deg, #ffb347, #ff8c1a);
+            border: none;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .test-jumbo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -8px rgba(0,0,0,0.3);
+            background: linear-gradient(95deg, #ffa01e, #ff7812);
+        }
+
         /* Секции */
         section {
             background: white;
@@ -290,6 +315,11 @@
                 🧪 Изучай химию с наглядными примерами, таблицами элементов и ключевыми законами. 
                 От основ до интересных фактов.
             </div>
+            <!-- НОВАЯ КНОПКА: переход на отдельную страницу с тестами -->
+            <button class="test-jumbo-btn" id="goToQuizBtn">
+                <i class="fas fa-puzzle-piece"></i> 🧠 Перейти к тестовым заданиям
+                <i class="fas fa-arrow-right"></i>
+            </button>
             <div class="quick-nav">
                 <div class="nav-chip" data-scroll="periodic"><i class="fas fa-table"></i> Элементы</div>
                 <div class="nav-chip" data-scroll="acids"><i class="fas fa-vial"></i> Кислоты и основания</div>
@@ -465,9 +495,244 @@
         <p style="margin-top: 0.6rem;">🧪 Экспериментируйте безопасно и изучайте химию с интересом!</p>
     </div>
 
-    <!-- Плавный скролл -->
+    <!-- СКРИПТ ДЛЯ ОТКРЫТИЯ СТРАНИЦЫ С ТЕСТОВЫМИ ЗАДАНИЯМИ (отдельный html, внедряемый динамически) -->
     <script>
         (function() {
+            // Функция для создания и открытия новой страницы с тестовыми заданиями (полноценный HTML документ)
+            function openQuizPage() {
+                // Создаем полноценную страницу с тестами по химии
+                const quizHTML = `<!DOCTYPE html>
+                <html lang="ru">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Химический тест | Проверь свои знания</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;500;600;700&display=swap" rel="stylesheet">
+                    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                    <style>
+                        * {
+                            margin: 0;
+                            padding: 0;
+                            box-sizing: border-box;
+                        }
+                        body {
+                            font-family: 'Inter', sans-serif;
+                            background: linear-gradient(125deg, #eef2f9, #e0e9f2);
+                            padding: 2rem 1rem;
+                            color: #1a2c3e;
+                        }
+                        .quiz-container {
+                            max-width: 850px;
+                            margin: 0 auto;
+                            background: white;
+                            border-radius: 2rem;
+                            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+                            overflow: hidden;
+                            padding: 2rem;
+                        }
+                        h1 {
+                            font-size: 2rem;
+                            color: #0f3b4f;
+                            border-left: 6px solid #ff8c1a;
+                            padding-left: 1rem;
+                            margin-bottom: 0.3rem;
+                        }
+                        .sub {
+                            color: #2c7da0;
+                            margin-bottom: 1.8rem;
+                            border-bottom: 1px solid #cbdae6;
+                            padding-bottom: 0.6rem;
+                        }
+                        .question-card {
+                            background: #f9fbfe;
+                            border-radius: 1.5rem;
+                            padding: 1.2rem 1.5rem;
+                            margin-bottom: 1.8rem;
+                            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                            transition: 0.1s;
+                        }
+                        .question-text {
+                            font-weight: 700;
+                            font-size: 1.2rem;
+                            margin-bottom: 1rem;
+                            display: flex;
+                            gap: 10px;
+                        }
+                        .options {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 0.7rem;
+                            margin-left: 1.2rem;
+                        }
+                        .option {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            cursor: pointer;
+                            padding: 0.3rem 0;
+                        }
+                        input[type="radio"] {
+                            width: 18px;
+                            height: 18px;
+                            cursor: pointer;
+                            accent-color: #2c7da0;
+                        }
+                        .btn-submit {
+                            background: #2c7da0;
+                            border: none;
+                            padding: 0.9rem 1.8rem;
+                            font-size: 1.1rem;
+                            font-weight: 600;
+                            color: white;
+                            border-radius: 60px;
+                            cursor: pointer;
+                            margin-top: 1rem;
+                            transition: 0.2s;
+                            width: 100%;
+                        }
+                        .btn-submit:hover {
+                            background: #1f6683;
+                            transform: scale(0.98);
+                        }
+                        .result-area {
+                            margin-top: 1.5rem;
+                            background: #eef3fc;
+                            border-radius: 1.2rem;
+                            padding: 1rem;
+                            text-align: center;
+                            font-weight: 500;
+                        }
+                        .back-link {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                            margin-bottom: 1rem;
+                            color: #1f6683;
+                            text-decoration: none;
+                            font-weight: 500;
+                        }
+                        .back-link:hover {
+                            text-decoration: underline;
+                        }
+                        footer {
+                            text-align: center;
+                            margin-top: 1rem;
+                            font-size: 0.7rem;
+                            color: #5a6e7a;
+                        }
+                        @media (max-width: 600px) {
+                            .quiz-container { padding: 1.2rem; }
+                            .question-text { font-size: 1rem; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="quiz-container">
+                        <a href="#" class="back-link" onclick="window.history.back(); return false;"><i class="fas fa-arrow-left"></i> Вернуться на главную</a>
+                        <h1><i class="fas fa-vial"></i> Тестовые задания по химии</h1>
+                        <div class="sub">Проверьте свои знания: выберите верный вариант ответа.</div>
+                        
+                        <form id="quizForm">
+                            <div class="question-card">
+                                <div class="question-text">1. Какой химический элемент обозначается символом "Na"?</div>
+                                <div class="options">
+                                    <label class="option"><input type="radio" name="q1" value="0"> А) Золото</label>
+                                    <label class="option"><input type="radio" name="q1" value="1"> Б) Натрий</label>
+                                    <label class="option"><input type="radio" name="q1" value="0"> В) Азот</label>
+                                    <label class="option"><input type="radio" name="q1" value="0"> Г) Неон</label>
+                                </div>
+                            </div>
+                            <div class="question-card">
+                                <div class="question-text">2. Какая кислота содержится в желудочном соке человека?</div>
+                                <div class="options">
+                                    <label class="option"><input type="radio" name="q2" value="1"> А) Соляная (HCl)</label>
+                                    <label class="option"><input type="radio" name="q2" value="0"> Б) Серная (H₂SO₄)</label>
+                                    <label class="option"><input type="radio" name="q2" value="0"> В) Азотная (HNO₃)</label>
+                                    <label class="option"><input type="radio" name="q2" value="0"> Г) Уксусная (CH₃COOH)</label>
+                                </div>
+                            </div>
+                            <div class="question-card">
+                                <div class="question-text">3. Какой тип реакции: CaCO₃ → CaO + CO₂ ?</div>
+                                <div class="options">
+                                    <label class="option"><input type="radio" name="q3" value="0"> А) Соединение</label>
+                                    <label class="option"><input type="radio" name="q3" value="0"> Б) Замещение</label>
+                                    <label class="option"><input type="radio" name="q3" value="1"> В) Разложение</label>
+                                    <label class="option"><input type="radio" name="q3" value="0"> Г) Обмен</label>
+                                </div>
+                            </div>
+                            <div class="question-card">
+                                <div class="question-text">4. Чему равно число Авогадро (частиц в 1 моль вещества)?</div>
+                                <div class="options">
+                                    <label class="option"><input type="radio" name="q4" value="0"> А) 3,14·10²³</label>
+                                    <label class="option"><input type="radio" name="q4" value="1"> Б) 6,022·10²³</label>
+                                    <label class="option"><input type="radio" name="q4" value="0"> В) 1,602·10⁻¹⁹</label>
+                                    <label class="option"><input type="radio" name="q4" value="0"> Г) 8,314</label>
+                                </div>
+                            </div>
+                            <div class="question-card">
+                                <div class="question-text">5. Какой индикатор в щелочной среде становится малиновым?</div>
+                                <div class="options">
+                                    <label class="option"><input type="radio" name="q5" value="0"> А) Лакмус</label>
+                                    <label class="option"><input type="radio" name="q5" value="1"> Б) Фенолфталеин</label>
+                                    <label class="option"><input type="radio" name="q5" value="0"> В) Метилоранж</label>
+                                    <label class="option"><input type="radio" name="q5" value="0"> Г) Бромтимоловый синий</label>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-submit" id="checkQuizBtn"><i class="fas fa-check-circle"></i> Проверить ответы</button>
+                        </form>
+                        <div id="quizResult" class="result-area"></div>
+                        <footer>🎓 Химический тест — попробуй ответить без подсказок!</footer>
+                    </div>
+                    <script>
+                        document.getElementById('checkQuizBtn').addEventListener('click', function() {
+                            const answers = {
+                                q1: '1',   // Натрий
+                                q2: '1',   // Соляная
+                                q3: '1',   // Разложение
+                                q4: '1',   // 6,022·10²³
+                                q5: '1'    // Фенолфталеин
+                            };
+                            let score = 0;
+                            for (let i = 1; i <= 5; i++) {
+                                const qName = 'q' + i;
+                                const selected = document.querySelector('input[name="' + qName + '"]:checked');
+                                if (selected && selected.value === answers[qName]) {
+                                    score++;
+                                }
+                            }
+                            const resultDiv = document.getElementById('quizResult');
+                            if (score === 5) {
+                                resultDiv.innerHTML = '<i class="fas fa-star" style="color:gold;"></i> <strong>Отлично!</strong> Вы ответили на все 5 вопросов правильно! 🧪✨';
+                                resultDiv.style.background = '#d9f0e1';
+                            } else if (score >= 3) {
+                                resultDiv.innerHTML = '<i class="fas fa-thumbs-up"></i> <strong>Хороший результат!</strong> Вы набрали ' + score + ' из 5. Повторите слабые места.';
+                                resultDiv.style.background = '#eef3fc';
+                            } else {
+                                resultDiv.innerHTML = '<i class="fas fa-book-open"></i> <strong>Попробуйте ещё раз!</strong> Правильных ответов: ' + score + ' из 5. Вернитесь к теории на главной странице.';
+                                resultDiv.style.background = '#ffe6e6';
+                            }
+                        });
+                    </script>
+                </body>
+                </html>`;
+                
+                // Открываем новую страницу с тестами
+                const quizWindow = window.open();
+                if (quizWindow) {
+                    quizWindow.document.write(quizHTML);
+                    quizWindow.document.close();
+                } else {
+                    alert("Пожалуйста, разрешите всплывающие окна для перехода к тестам.");
+                }
+            }
+            
+            // Привязываем кнопку
+            const quizBtn = document.getElementById('goToQuizBtn');
+            if (quizBtn) {
+                quizBtn.addEventListener('click', openQuizPage);
+            }
+
+            // Плавный скролл для навигационных чипов (оставляем)
             const navChips = document.querySelectorAll('.nav-chip');
             navChips.forEach(chip => {
                 chip.addEventListener('click', function(e) {
@@ -480,8 +745,6 @@
                     }
                 });
             });
-            // Дополнительно для улучшения отображения корректных символов (верхние/нижние индексы уже в тексте)
-            console.log("Химический сайт загружен | Periodic table & info");
         })();
     </script>
 </body>
