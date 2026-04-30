@@ -1,616 +1,488 @@
-﻿<!DOCTYPE html>
-
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Алексей Волков — Разработчик</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Химическая станция | Основы химии и элементы</title>
+    <!-- Шрифты для современного вида -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (бесплатные иконки) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-```
-:root {
-  --bg: #f5f0e8;
-  --ink: #1a1612;
-  --accent: #c94f2c;
-  --muted: #8a7f72;
-  --line: #d4ccc0;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            color: #1a2c3e;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
 
-html { scroll-behavior: smooth; }
+        /* Кастомный скролл */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #d9e0eb;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d7ca3;
+            border-radius: 10px;
+        }
 
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: 'DM Mono', monospace;
-  font-weight: 300;
-  font-size: 14px;
-  line-height: 1.7;
-  cursor: none;
-  overflow-x: hidden;
-}
+        /* Контейнер */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
-/* Custom cursor */
-.cursor {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  background: var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease;
-  mix-blend-mode: multiply;
-}
-.cursor.big { width: 40px; height: 40px; opacity: 0.4; }
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, #0b2b3b 0%, #123e54 100%);
+            color: white;
+            padding: 2rem 0 3rem 0;
+            border-radius: 0 0 2rem 2rem;
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            margin-bottom: 3rem;
+        }
 
-/* Noise overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.6;
-}
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
 
-/* Layout */
-.container { max-width: 1100px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 1; }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #FFFFFF, #c9e9ff);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-/* Header */
-header {
-  border-bottom: 1px solid var(--line);
-  padding: 28px 0;
-}
-.header-inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.logo {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-nav { display: flex; gap: 32px; }
-nav a {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--muted);
-  transition: color 0.2s;
-}
-nav a:hover { color: var(--accent); }
+        .hero-tag {
+            font-size: 1.2rem;
+            margin-top: 0.75rem;
+            opacity: 0.9;
+            font-weight: 400;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(4px);
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            display: inline-block;
+        }
 
-/* Hero */
-.hero {
-  padding: 100px 0 80px;
-  border-bottom: 1px solid var(--line);
-  position: relative;
-  overflow: hidden;
-}
-.hero-tag {
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 24px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.1s forwards;
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(52px, 7vw, 96px);
-  line-height: 1.05;
-  font-weight: 400;
-  max-width: 800px;
-  opacity: 0;
-  animation: fadeUp 0.9s 0.25s forwards;
-}
-.hero h1 em {
-  font-style: italic;
-  color: var(--accent);
-}
-.hero-sub {
-  margin-top: 36px;
-  max-width: 440px;
-  color: var(--muted);
-  font-size: 13px;
-  opacity: 0;
-  animation: fadeUp 0.9s 0.4s forwards;
-}
-.hero-actions {
-  margin-top: 48px;
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  opacity: 0;
-  animation: fadeUp 0.9s 0.55s forwards;
-}
-.btn-primary {
-  display: inline-block;
-  padding: 14px 32px;
-  background: var(--ink);
-  color: var(--bg);
-  text-decoration: none;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  transition: background 0.25s, transform 0.2s;
-}
-.btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
-.btn-ghost {
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--muted);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+        .hero-desc {
+            max-width: 700px;
+            margin: 1.5rem auto 0;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            background: rgba(0,0,0,0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 400;
+        }
 
-.hero-number {
-  position: absolute;
-  right: 0;
-  top: 80px;
-  font-family: 'Playfair Display', serif;
-  font-size: 220px;
-  color: var(--line);
-  font-weight: 700;
-  line-height: 1;
-  user-select: none;
-  opacity: 0;
-  animation: fadeIn 1.2s 0.6s forwards;
-}
+        /* Навигационные карточки (быстрые ссылки) */
+        .quick-nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.8rem 0 0.5rem;
+        }
+        .nav-chip {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(8px);
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .nav-chip i {
+            margin-right: 8px;
+        }
+        .nav-chip:hover {
+            background: rgba(255,255,255,0.35);
+            transform: scale(1.02);
+        }
 
-/* About */
-.about {
-  padding: 80px 0;
-  border-bottom: 1px solid var(--line);
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 60px;
-}
-.section-label {
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-.about-heading {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px;
-  color: var(--muted);
-  font-weight: 400;
-}
-.about-text p {
-  font-size: 15px;
-  line-height: 1.8;
-  color: var(--ink);
-  margin-bottom: 20px;
-}
-.about-text p:last-child { margin-bottom: 0; }
-.about-text strong { font-weight: 400; color: var(--accent); }
+        /* Секции */
+        section {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s;
+        }
 
-/* Skills */
-.skills {
-  padding: 80px 0;
-  border-bottom: 1px solid var(--line);
-}
-.skills-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 60px;
-}
-.skills-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 42px;
-  font-weight: 400;
-}
-.skills-count {
-  font-size: 11px;
-  color: var(--muted);
-  letter-spacing: 0.15em;
-}
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  background: var(--line);
-}
-.skill-item {
-  background: var(--bg);
-  padding: 32px;
-  transition: background 0.25s;
-}
-.skill-item:hover { background: var(--ink); }
-.skill-item:hover .skill-name,
-.skill-item:hover .skill-desc { color: var(--bg); }
-.skill-item:hover .skill-icon { color: var(--accent); }
-.skill-icon {
-  font-size: 22px;
-  margin-bottom: 16px;
-  color: var(--accent);
-  transition: color 0.25s;
-}
-.skill-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  font-weight: 400;
-  margin-bottom: 10px;
-  transition: color 0.25s;
-}
-.skill-desc {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.6;
-  transition: color 0.25s;
-}
+        .section-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+            border-left: 6px solid #2c7da0;
+            padding-left: 1.2rem;
+            color: #0f3b4f;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title i {
+            color: #2c7da0;
+            font-size: 1.8rem;
+        }
 
-/* Work */
-.work {
-  padding: 80px 0;
-  border-bottom: 1px solid var(--line);
-}
-.work h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 42px;
-  font-weight: 400;
-  margin-bottom: 60px;
-}
-.project {
-  display: grid;
-  grid-template-columns: 80px 1fr auto;
-  align-items: start;
-  gap: 32px;
-  padding: 32px 0;
-  border-top: 1px solid var(--line);
-  transition: all 0.25s;
-}
-.project:last-child { border-bottom: 1px solid var(--line); }
-.project:hover .project-num { color: var(--accent); }
-.project-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px;
-  color: var(--line);
-  font-weight: 400;
-  transition: color 0.25s;
-}
-.project-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 8px;
-}
-.project-tech {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-}
-.project-link {
-  font-size: 11px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: var(--muted);
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 2px;
-  white-space: nowrap;
-  align-self: center;
-  transition: color 0.2s, border-color 0.2s;
-}
-.project-link:hover { color: var(--accent); border-color: var(--accent); }
+        /* Карточки периодической сетки */
+        .periodic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+        .element-card {
+            background: #f9fbfe;
+            border-radius: 1.2rem;
+            padding: 1rem 0.8rem;
+            text-align: center;
+            transition: all 0.2s ease;
+            border: 1px solid #e2edf2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+        }
+        .element-card:hover {
+            transform: translateY(-5px);
+            border-color: #9ec5d9;
+            box-shadow: 0 15px 20px -12px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+        .element-symbol {
+            font-size: 2rem;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(145deg, #1e5a75, #143f52);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .element-name {
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-size: 0.95rem;
+        }
+        .element-mass {
+            font-size: 0.7rem;
+            color: #5f7f92;
+            margin-top: 0.2rem;
+            font-family: monospace;
+        }
 
-/* Contact */
-.contact {
-  padding: 80px 0 100px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
-}
-.contact-left h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 52px;
-  font-weight: 400;
-  line-height: 1.1;
-  margin-bottom: 24px;
-}
-.contact-left h2 em { font-style: italic; color: var(--accent); }
-.contact-left p {
-  color: var(--muted);
-  font-size: 13px;
-  margin-bottom: 40px;
-}
-.contact-email {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  color: var(--ink);
-  text-decoration: none;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 4px;
-  transition: color 0.2s, border-color 0.2s;
-}
-.contact-email:hover { color: var(--accent); border-color: var(--accent); }
-.contact-right { padding-top: 16px; }
-.social-list { list-style: none; }
-.social-list li {
-  border-top: 1px solid var(--line);
-  padding: 18px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.social-list li:last-child { border-bottom: 1px solid var(--line); }
-.social-list a {
-  text-decoration: none;
-  color: var(--ink);
-  font-size: 13px;
-  transition: color 0.2s;
-}
-.social-list a:hover { color: var(--accent); }
-.social-arrow { color: var(--muted); font-size: 18px; }
+        /* Таблица кислот и оснований */
+        .chem-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .chem-table th {
+            background: #e3f0f5;
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #1a4c66;
+        }
+        .chem-table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid #e9edf2;
+        }
+        .chem-table tr:last-child td {
+            border-bottom: none;
+        }
 
-/* Footer */
-footer {
-  border-top: 1px solid var(--line);
-  padding: 24px 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-footer p { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+        /* Текст и списки */
+        .concept-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0 0.5rem;
+        }
+        .concept-badge {
+            background: #eef3fa;
+            border-radius: 50px;
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e6a8a;
+            transition: 0.1s;
+        }
+        .concept-badge i {
+            margin-right: 8px;
+        }
 
-/* Animations */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
+        .reaction-example {
+            background: #f8fafd;
+            padding: 1rem 1.5rem;
+            border-radius: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            border-left: 4px solid #2c7da0;
+            margin: 1rem 0;
+        }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+        .footer {
+            background: #0f2c38;
+            color: #cbdbe2;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 2rem 2rem 0 0;
+            margin-top: 2rem;
+            font-size: 0.85rem;
+        }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .container { padding: 0 20px; }
-  .about, .contact { grid-template-columns: 1fr; gap: 40px; }
-  .skills-grid { grid-template-columns: 1fr; }
-  .project { grid-template-columns: 50px 1fr; }
-  .project-link { display: none; }
-  nav { display: none; }
-  .hero-number { display: none; }
-}
-```
+        @media (max-width: 700px) {
+            .container {
+                padding: 0 16px;
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .periodic-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .chem-table th, .chem-table td {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+        }
 
-  </style>
+        a {
+            text-decoration: none;
+        }
+        button, .nav-chip {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-
-<div class="cursor" id="cursor"></div>
-
-<!-- Header -->
-
-<header>
-  <div class="container">
-    <div class="header-inner">
-      <div class="logo">А.В. — Портфолио</div>
-      <nav>
-        <a href="#about">О себе</a>
-        <a href="#skills">Навыки</a>
-        <a href="#work">Проекты</a>
-        <a href="#contact">Контакт</a>
-      </nav>
+    <div class="hero">
+        <div class="container hero-content">
+            <h1><i class="fas fa-flask"></i> Химическая станция</h1>
+            <div class="hero-tag">Периодическая система • Кислоты • Реакции • Органика</div>
+            <div class="hero-desc">
+                🧪 Изучай химию с наглядными примерами, таблицами элементов и ключевыми законами. 
+                От основ до интересных фактов.
+            </div>
+            <div class="quick-nav">
+                <div class="nav-chip" data-scroll="periodic"><i class="fas fa-table"></i> Элементы</div>
+                <div class="nav-chip" data-scroll="acids"><i class="fas fa-vial"></i> Кислоты и основания</div>
+                <div class="nav-chip" data-scroll="reactions"><i class="fas fa-exchange-alt"></i> Типы реакций</div>
+                <div class="nav-chip" data-scroll="theory"><i class="fas fa-atom"></i> Основные законы</div>
+            </div>
+        </div>
     </div>
-  </div>
-</header>
 
-<!-- Hero -->
+    <div class="container">
+        <!-- Секция: Периодическая таблица (выборочные элементы) -->
+        <section id="periodic">
+            <div class="section-title">
+                <i class="fas fa-border-all"></i>
+                <span>🔬 12 ключевых элементов периодической системы</span>
+            </div>
+            <p style="margin-bottom: 1.2rem; color: #2c5e74;">Основные химические элементы, их символы и атомные массы (округлено).</p>
+            <div class="periodic-grid">
+                <!-- H -->
+                <div class="element-card"><div class="element-symbol">H</div><div class="element-name">Водород</div><div class="element-mass">1.008 г/моль</div></div>
+                <div class="element-card"><div class="element-symbol">He</div><div class="element-name">Гелий</div><div class="element-mass">4.0026</div></div>
+                <div class="element-card"><div class="element-symbol">Li</div><div class="element-name">Литий</div><div class="element-mass">6.94</div></div>
+                <div class="element-card"><div class="element-symbol">C</div><div class="element-name">Углерод</div><div class="element-mass">12.011</div></div>
+                <div class="element-card"><div class="element-symbol">N</div><div class="element-name">Азот</div><div class="element-mass">14.007</div></div>
+                <div class="element-card"><div class="element-symbol">O</div><div class="element-name">Кислород</div><div class="element-mass">15.999</div></div>
+                <div class="element-card"><div class="element-symbol">Na</div><div class="element-name">Натрий</div><div class="element-mass">22.990</div></div>
+                <div class="element-card"><div class="element-symbol">Mg</div><div class="element-name">Магний</div><div class="element-mass">24.305</div></div>
+                <div class="element-card"><div class="element-symbol">Cl</div><div class="element-name">Хлор</div><div class="element-mass">35.45</div></div>
+                <div class="element-card"><div class="element-symbol">Fe</div><div class="element-name">Железо</div><div class="element-mass">55.845</div></div>
+                <div class="element-card"><div class="element-symbol">Cu</div><div class="element-name">Медь</div><div class="element-mass">63.546</div></div>
+                <div class="element-card"><div class="element-symbol">Au</div><div class="element-name">Золото</div><div class="element-mass">196.97</div></div>
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.85rem; background:#eef3fc; padding: 0.6rem 1rem; border-radius: 20px;"><i class="fas fa-lightbulb"></i> Совет: в периодической системе Менделеева свойства элементов повторяются периодически — это основа химии.</p>
+        </section>
 
-<section class="hero" id="home">
-  <div class="container">
-    <div class="hero-tag">Доступен для новых проектов</div>
-    <h1>Алексей<br><em>Волков</em></h1>
-    <p class="hero-sub">Fullstack-разработчик, создающий цифровые продукты с вниманием к деталям и человеку за экраном.</p>
-    <div class="hero-actions">
-      <a href="#work" class="btn-primary">Посмотреть работы</a>
-      <a href="#contact" class="btn-ghost">Связаться →</a>
+        <!-- Секция: Кислоты и основания -->
+        <section id="acids">
+            <div class="section-title">
+                <i class="fas fa-droplet"></i>
+                <span>🧪 Кислоты, основания и соли</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                <div style="flex: 1; min-width: 200px;">
+                    <h3 style="margin-bottom: 0.8rem; color:#1f6683;">📌 Сильные кислоты</h3>
+                    <ul style="list-style-type: none;">
+                        <li><i class="fas fa-check-circle" style="color:#2a9d8f;"></i> HCl — Соляная кислота</li>
+                        <li><i class="fas fa-check-circle" style="color:#2a9d8f;"></i> HNO₃ — Азотная кислота</li>
+                        <li><i class="fas fa-check-circle" style="color:#2a9d8f;"></i> H₂SO₄ — Серная кислота</li>
+                        <li><i class="fas fa-check-circle" style="color:#2a9d8f;"></i> HI — Иодоводородная</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h3 style="margin-bottom: 0.8rem; color:#1f6683;">🧴 Сильные основания (щёлочи)</h3>
+                    <ul style="list-style-type: none;">
+                        <li><i class="fas fa-check-circle" style="color:#e76f51;"></i> NaOH — Гидроксид натрия</li>
+                        <li><i class="fas fa-check-circle" style="color:#e76f51;"></i> KOH — Гидроксид калия</li>
+                        <li><i class="fas fa-check-circle" style="color:#e76f51;"></i> Ca(OH)₂ — Гидроксид кальция</li>
+                        <li><i class="fas fa-check-circle" style="color:#e76f51;"></i> Ba(OH)₂</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h3 style="margin-bottom: 0.8rem; color:#1f6683;">⚖️ Индикаторы pH</h3>
+                    <ul style="list-style-type: none;">
+                        <li><i class="fas fa-chart-line"></i> Лакмус: кислота → красный, щелочь → синий</li>
+                        <li><i class="fas fa-chart-line"></i> Фенолфталеин: бесцветный в кислоте, малиновый в щелочи</li>
+                        <li><i class="fas fa-chart-line"></i> Метилоранж: красный (кислота), желтый (щелочь)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="reaction-example">
+                <i class="fas fa-graduation-cap"></i> <strong>Реакция нейтрализации</strong> — основа взаимодействия кислоты и основания:<br>
+                HCl + NaOH → NaCl (поваренная соль) + H₂O
+            </div>
+        </section>
+
+        <!-- Секция: Типы химических реакций -->
+        <section id="reactions">
+            <div class="section-title">
+                <i class="fas fa-random"></i>
+                <span>🔥 Типы химических реакций</span>
+            </div>
+            <div class="concept-list">
+                <div class="concept-badge"><i class="fas fa-plus-circle"></i> Соединение: A + B → AB</div>
+                <div class="concept-badge"><i class="fas fa-cut"></i> Разложение: AB → A + B</div>
+                <div class="concept-badge"><i class="fas fa-retweet"></i> Замещение: A + BC → AC + B</div>
+                <div class="concept-badge"><i class="fas fa-exchange"></i> Обмен: AB + CD → AD + CB</div>
+                <div class="concept-badge"><i class="fas fa-fire"></i> Окисление-восстановление</div>
+            </div>
+            <p style="margin-top: 16px;">Примеры реакций:</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.5rem;">
+                <div style="background:#f2f6fc; border-radius: 1rem; padding: 0.8rem 1.2rem; flex:1;"><strong>🔹 Горение метана:</strong><br> CH₄ + 2O₂ → CO₂ + 2H₂O</div>
+                <div style="background:#f2f6fc; border-radius: 1rem; padding: 0.8rem 1.2rem; flex:1;"><strong>🔹 Замещение цинка в кислоте:</strong><br> Zn + 2HCl → ZnCl₂ + H₂↑</div>
+                <div style="background:#f2f6fc; border-radius: 1rem; padding: 0.8rem 1.2rem; flex:1;"><strong>🔹 Разложение карбоната:</strong><br> CaCO₃ → CaO + CO₂</div>
+            </div>
+        </section>
+
+        <!-- Секция: Основные законы и теория -->
+        <section id="theory">
+            <div class="section-title">
+                <i class="fas fa-microscope"></i>
+                <span>📖 Основные химические законы</span>
+            </div>
+            <table class="chem-table">
+                <thead>
+                    <tr><th>Закон / Концепция</th><th>Суть</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Закон сохранения массы (Ломоносов — Лавуазье)</td><td>Масса веществ, вступивших в реакцию, равна массе продуктов реакции.</td></tr>
+                    <tr><td>Закон постоянства состава</td><td>Любое чистое вещество имеет постоянный качественный и количественный состав.</td></tr>
+                    <tr><td>Периодический закон (Менделеев)</td><td>Свойства химических элементов находятся в периодической зависимости от их атомной массы (заряда ядра).</td></tr>
+                    <tr><td>Закон Авогадро</td><td>В равных объёмах газов при одинаковых условиях содержится одинаковое число молекул.</td></tr>
+                </tbody>
+            </table>
+            <div class="reaction-example" style="margin-top: 1.5rem;">
+                <i class="fas fa-chalkboard-user"></i> <strong>Моль и число Авогадро:</strong> 1 моль вещества содержит 6,022·10²³ частиц (атомов, молекул). Это фундаментальная константа химии.
+            </div>
+        </section>
+
+        <!-- Секция: Органическая химия и интересные факты -->
+        <section>
+            <div class="section-title">
+                <i class="fas fa-leaf"></i>
+                <span>🧬 Органическая химия & факты</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; gap: 1.8rem;">
+                <div style="flex: 1.4">
+                    <h3>🌿 Основные классы органических веществ</h3>
+                    <ul style="margin-left: 1.2rem; margin-top: 0.5rem;">
+                        <li><strong>Алканы</strong> (предельные углеводороды): CH₄, C₂H₆</li>
+                        <li><strong>Алкены</strong> (с двойной связью): C₂H₄ (этилен)</li>
+                        <li><strong>Спирты</strong>: C₂H₅OH (этанол)</li>
+                        <li><strong>Карбоновые кислоты</strong>: CH₃COOH (уксусная)</li>
+                        <li><strong>Углеводы, белки, липиды</strong> — основа живого</li>
+                    </ul>
+                </div>
+                <div style="flex: 1">
+                    <h3>✨ Химические лайфхаки</h3>
+                    <ul>
+                        <li>🔹 Лук не будет щипать глаза, если резать его охлаждённым (меньше летучих соединений).</li>
+                        <li>🔹 Молоко помогает при отравлении кислотами? Не совсем, лучше щелочная вода – но главное вызвать врача.</li>
+                        <li>🔹 Самый распространённый элемент во Вселенной — водород.</li>
+                        <li>🔹 Золото не реагирует с большинством кислот (только с «царской водкой»).</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="background: linear-gradient(110deg, #cbe5f0, #e5f1f7); margin-top: 1.5rem; padding: 1rem 1.5rem; border-radius: 1.2rem;">
+                <i class="fas fa-quote-left"></i> <em>«Химия — это область чудес, в ней скрыто счастье человеческой мысли, благодаря ей побеждаются мрак и тяжесть вещества»</em> — М. Горький.
+            </div>
+        </section>
+
+        <!-- Дополнительная секция - Растворимость и таблица ионов -->
+        <section>
+            <div class="section-title">
+                <i class="fas fa-water"></i>
+                <span>💧 Таблица растворимости (ключевые ионы)</span>
+            </div>
+            <p style="margin-bottom: 0.8rem;">Правила растворимости солей и оснований в воде:</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 0.8rem;">
+                <div><i class="fas fa-check-circle" style="color:#2c7da0;"></i> Все нитраты (NO₃⁻) — растворимы.</div>
+                <div><i class="fas fa-check-circle" style="color:#2c7da0;"></i> Соли Na⁺, K⁺, NH₄⁺ — растворимы.</div>
+                <div><i class="fas fa-times-circle" style="color:#c44536;"></i> Хлориды Ag⁺, Pb²⁺ — нерастворимы.</div>
+                <div><i class="fas fa-times-circle" style="color:#c44536;"></i> Карбонаты CO₃²⁻ (кроме Na⁺, K⁺, NH₄⁺) — нерастворимы.</div>
+                <div><i class="fas fa-times-circle" style="color:#c44536;"></i> Гидроксиды большинства металлов (кроме щелочей) — малорастворимы.</div>
+            </div>
+            <div class="reaction-example" style="margin-top: 1rem;">
+                ☑️ Пример реакции ионного обмена: AgNO₃ + NaCl → AgCl↓ (белый творожистый осадок) + NaNO₃
+            </div>
+        </section>
     </div>
-    <div class="hero-number">01</div>
-  </div>
-</section>
 
-<!-- About -->
-
-<section id="about" style="border-bottom: 1px solid var(--line);">
-  <div class="container about reveal">
-    <div>
-      <div class="section-label">О себе</div>
-      <div class="about-heading">Краткое представление</div>
+    <div class="footer">
+        <p><i class="fas fa-atom"></i> Химический портал — для учащихся, студентов и всех, кто влюблён в науку. <br> Данные носят образовательный характер. Периодическая таблица © 2025</p>
+        <p style="margin-top: 0.6rem;">🧪 Экспериментируйте безопасно и изучайте химию с интересом!</p>
     </div>
-    <div class="about-text">
-      <p>Привет! Я разработчик с <strong>5+ годами опыта</strong> в создании веб-приложений — от небольших лендингов до сложных платформ. Мне важны не просто рабочий код, но и архитектура, скорость и то, каково это — использовать продукт каждый день.</p>
-      <p>Живу и работаю в Москве. В свободное время пишу статьи про технологии, увлекаюсь фотографией и стараюсь проводить побольше времени на природе.</p>
-    </div>
-  </div>
-</section>
 
-<!-- Skills -->
-
-<section id="skills" class="skills">
-  <div class="container">
-    <div class="skills-header reveal">
-      <h2>Что я умею</h2>
-      <span class="skills-count">06 направлений</span>
-    </div>
-    <div class="skills-grid reveal">
-      <div class="skill-item">
-        <div class="skill-icon">◈</div>
-        <div class="skill-name">Frontend</div>
-        <div class="skill-desc">React, TypeScript, Next.js. Чистый CSS без лишних зависимостей.</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-icon">◉</div>
-        <div class="skill-name">Backend</div>
-        <div class="skill-desc">Node.js, Python, PostgreSQL. Проектирование API и баз данных.</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-icon">◎</div>
-        <div class="skill-name">DevOps</div>
-        <div class="skill-desc">Docker, CI/CD, деплой на облачные платформы.</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-icon">◇</div>
-        <div class="skill-name">UI / UX</div>
-        <div class="skill-desc">Figma, дизайн-системы, прототипирование интерфейсов.</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-icon">◆</div>
-        <div class="skill-name">Производительность</div>
-        <div class="skill-desc">Профилирование, оптимизация Core Web Vitals, кэширование.</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-icon">○</div>
-        <div class="skill-name">Менторинг</div>
-        <div class="skill-desc">Код-ревью, архитектурные консультации, онбординг команд.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Work -->
-
-<section id="work" class="work">
-  <div class="container">
-    <h2 class="reveal">Избранные проекты</h2>
-
-```
-<div class="project reveal">
-  <div class="project-num">01</div>
-  <div>
-    <div class="project-name">Marketplace Platform</div>
-    <div class="project-tech">React · Node.js · PostgreSQL · AWS</div>
-  </div>
-  <a href="#" class="project-link">Смотреть →</a>
-</div>
-
-<div class="project reveal">
-  <div class="project-num">02</div>
-  <div>
-    <div class="project-name">Analytics Dashboard</div>
-    <div class="project-tech">Next.js · D3.js · GraphQL · Vercel</div>
-  </div>
-  <a href="#" class="project-link">Смотреть →</a>
-</div>
-
-<div class="project reveal">
-  <div class="project-num">03</div>
-  <div>
-    <div class="project-name">Mobile Banking App</div>
-    <div class="project-tech">React Native · TypeScript · Firebase</div>
-  </div>
-  <a href="#" class="project-link">Смотреть →</a>
-</div>
-
-<div class="project reveal">
-  <div class="project-num">04</div>
-  <div>
-    <div class="project-name">CMS для медиа</div>
-    <div class="project-tech">Python · Django · Redis · Elasticsearch</div>
-  </div>
-  <a href="#" class="project-link">Смотреть →</a>
-</div>
-```
-
-  </div>
-</section>
-
-<!-- Contact -->
-
-<section id="contact" style="border-top: 1px solid var(--line);">
-  <div class="container contact">
-    <div class="contact-left reveal">
-      <div class="section-label">Контакт</div>
-      <h2>Есть идея?<br><em>Давайте поговорим</em></h2>
-      <p>Открыт для фриланса, фуллтайм и коллабораций. Напишите — отвечу в течение дня.</p>
-      <a href="mailto:hello@alexeyvolkov.ru" class="contact-email">hello@alexeyvolkov.ru</a>
-    </div>
-    <div class="contact-right reveal">
-      <ul class="social-list">
-        <li>
-          <a href="#">GitHub</a>
-          <span class="social-arrow">↗</span>
-        </li>
-        <li>
-          <a href="#">Telegram</a>
-          <span class="social-arrow">↗</span>
-        </li>
-        <li>
-          <a href="#">LinkedIn</a>
-          <span class="social-arrow">↗</span>
-        </li>
-        <li>
-          <a href="#">Behance</a>
-          <span class="social-arrow">↗</span>
-        </li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-
-<footer>
-  <div class="container" style="display:flex;justify-content:space-between;align-items:center;width:100%">
-    <p>© 2026 Алексей Волков</p>
-    <p>Москва, Россия</p>
-  </div>
-</footer>
-
-<script>
-  // Custom cursor
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', e => {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button, .skill-item').forEach(el => {
-    el.addEventListener('mouseenter', () => cursor.classList.add('big'));
-    el.addEventListener('mouseleave', () => cursor.classList.remove('big'));
-  });
-
-  // Scroll reveal
-  const revealEls = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  revealEls.forEach(el => observer.observe(el));
-</script>
-
+    <!-- Плавный скролл -->
+    <script>
+        (function() {
+            const navChips = document.querySelectorAll('.nav-chip');
+            navChips.forEach(chip => {
+                chip.addEventListener('click', function(e) {
+                    const targetId = this.getAttribute('data-scroll');
+                    if(targetId) {
+                        const targetSection = document.getElementById(targetId);
+                        if(targetSection) {
+                            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+            // Дополнительно для улучшения отображения корректных символов (верхние/нижние индексы уже в тексте)
+            console.log("Химический сайт загружен | Periodic table & info");
+        })();
+    </script>
 </body>
 </html>
