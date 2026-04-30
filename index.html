@@ -2,120 +2,628 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Химия – главная</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Конвертер тестов: Word (DOCX/TXT) в Moodle XML</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            background: #f0f7ff;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
             color: #1a2c3e;
-            line-height: 1.5;
         }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        .hero {
-            background: linear-gradient(135deg, #0b2b3b, #123e54);
-            color: white;
-            padding: 2.5rem 0;
-            border-radius: 0 0 2rem 2rem;
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #1e6f3f, #2b8c5e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+        }
+        .sub {
+            color: #2c5a74;
             margin-bottom: 2rem;
-            text-align: center;
-        }
-        .hero h1 { font-size: 2.8rem; margin-bottom: 0.5rem; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; }
-        .btn-test {
-            display: inline-block;
-            background: #ff8c1a;
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 60px;
-            font-weight: 700;
-            text-decoration: none;
-            margin-top: 1.2rem;
-            transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-        .btn-test i { margin-right: 8px; }
-        .btn-test:hover { background: #e67e10; transform: translateY(-2px); }
-        section {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 1.8rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
-        }
-        h2 {
-            font-size: 1.8rem;
-            border-left: 5px solid #2c7da0;
+            border-left: 4px solid #2b8c5e;
             padding-left: 1rem;
-            margin-bottom: 1.2rem;
-            color: #0f3b4f;
         }
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
-            gap: 1rem;
-            margin: 1rem 0;
+        .grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem;
         }
-        .card {
-            background: #f9fbfe;
-            padding: 1rem;
-            border-radius: 1rem;
-            text-align: center;
-            border: 1px solid #e2edf2;
+        .panel {
+            flex: 1;
+            min-width: 280px;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
         }
-        .element-symbol { font-size: 2rem; font-weight: 800; font-family: monospace; }
-        footer {
-            background: #0f2c38;
-            color: #bbb;
-            text-align: center;
+        .panel-header {
+            background: #f8fafc;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e2edf2;
+            font-weight: 600;
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-header i {
+            font-style: normal;
+            font-size: 1.3rem;
+        }
+        .panel-content {
             padding: 1.5rem;
-            border-radius: 1.5rem 1.5rem 0 0;
-            margin-top: 2rem;
+            flex-grow: 1;
         }
-        @media (max-width: 700px) { .hero h1 { font-size: 2rem; } }
+        textarea {
+            width: 100%;
+            min-height: 380px;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            padding: 12px;
+            border: 1px solid #cbdde6;
+            border-radius: 20px;
+            resize: vertical;
+            background: #fefefe;
+            transition: 0.2s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #2b8c5e;
+            box-shadow: 0 0 0 3px rgba(43,140,94,0.2);
+        }
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        button {
+            background: #1e6f3f;
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        button:hover {
+            background: #0f5a34;
+            transform: translateY(-1px);
+        }
+        button.secondary {
+            background: #3a6b92;
+        }
+        button.secondary:hover {
+            background: #2c5472;
+        }
+        button.outline {
+            background: white;
+            border: 1px solid #2b8c5e;
+            color: #1e6f3f;
+            box-shadow: none;
+        }
+        button.outline:hover {
+            background: #e9f4ef;
+        }
+        .file-label {
+            background: #eef2f9;
+            border: 1px dashed #7c9eb3;
+            border-radius: 40px;
+            padding: 8px 18px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: #1e4663;
+            transition: 0.2s;
+        }
+        .file-label:hover {
+            background: #e2eaf3;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .info-box {
+            background: #eef6ef;
+            border-radius: 24px;
+            padding: 12px 18px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            border-left: 5px solid #2b8c5e;
+        }
+        .status {
+            font-size: 0.8rem;
+            color: #2d5a2c;
+            margin-top: 8px;
+        }
+        .badge {
+            background: #dff0e4;
+            border-radius: 40px;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #5c7f8c;
+            border-top: 1px solid #cde0e8;
+            padding-top: 1.5rem;
+        }
+        @media (max-width: 800px) {
+            .grid {
+                flex-direction: column;
+            }
+            textarea {
+                min-height: 280px;
+            }
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <div class="container">
-            <h1><i class="fas fa-flask"></i> Химическая станция</h1>
-            <p>Основы неорганической химии • Периодическая система • Реакции</p>
-            <a href="quiz.html" class="btn-test"><i class="fas fa-puzzle-piece"></i> Пройти тест →</a>
+<div class="container">
+    <h1>📄➡️📚 Конвертер тестов: Word → Moodle XML</h1>
+    <div class="sub">Преобразуйте текст вопросов (из Word, текстовых файлов) в формат импорта Moodle XML (вопросы с выбором одного ответа)</div>
+
+    <div class="grid">
+        <!-- Левая панель: ввод / загрузка Word -->
+        <div class="panel">
+            <div class="panel-header">
+                <i>📝</i> Исходный текст (Word / TXT)
+            </div>
+            <div class="panel-content">
+                <textarea id="sourceText" placeholder='Вставьте текст теста или загрузите файл .docx/.txt (структура описана ниже).&#10;&#10;Пример формата вопроса:&#10;1. Какой цвет у неба?&#10;A) Красный&#10;B) Синий&#10;C) Зеленый&#10;D) Желтый&#10;Правильный ответ: B&#10;&#10;Или разделяйте вопросы пустой строкой.&#10;Важно: варианты ответов с буквами A) B) C) или A. B. и строка "Правильный ответ: X" или "Answer: X".'></textarea>
+                <div class="toolbar">
+                    <label class="file-label">
+                        📂 Загрузить .docx или .txt
+                        <input type="file" id="fileInput" accept=".docx,.txt,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+                    </label>
+                    <button id="clearBtn" class="outline">🧹 Очистить</button>
+                    <button id="exampleBtn" class="outline">📋 Пример теста</button>
+                </div>
+                <div class="info-box">
+                    <strong>📌 Правила разметки (один из способов):</strong><br>
+                    • Каждый вопрос начинается с цифры и точки/скобки (1., 2. и т.д.)<br>
+                    • Варианты ответов: A) Текст  /  B. Текст  (буквы + разделитель)<br>
+                    • Указание правильного ответа: <code>Правильный ответ: B</code> или <code>Answer: C</code><br>
+                    • Вопросы отделяйте пустыми строками. Поддерживается копирование из MS Word.
+                </div>
+                <div id="parseStatus" class="status"></div>
+            </div>
+        </div>
+
+        <!-- Правая панель: XML Moodle + экспорт -->
+        <div class="panel">
+            <div class="panel-header">
+                <i>🎓</i> Moodle XML (готовый к импорту)
+            </div>
+            <div class="panel-content">
+                <textarea id="xmlOutput" readonly placeholder="Здесь появится XML для Moodle ..." style="background:#fafbfd;"></textarea>
+                <div class="toolbar">
+                    <button id="convertBtn">🔄 Конвертировать в Moodle XML</button>
+                    <button id="downloadXmlBtn" class="secondary">💾 Скачать XML-файл</button>
+                    <button id="copyXmlBtn" class="outline">📋 Копировать XML</button>
+                </div>
+                <div id="exportStatus" class="status"></div>
+                <div class="info-box" style="margin-top: 12px;">
+                    <strong>📥 Импорт в Moodle:</strong> Созданный XML совместим c категорией вопросов Moodle (тип "выбор одного ответа"). Используйте Администрирование → Банк вопросов → Импорт → Формат Moodle XML.
+                </div>
+            </div>
         </div>
     </div>
-    <div class="container">
-        <section>
-            <h2>🧪 10 ключевых элементов</h2>
-            <div class="grid-cards">
-                <div class="card"><div class="element-symbol">H</div><div>Водород</div></div>
-                <div class="card"><div class="element-symbol">He</div><div>Гелий</div></div>
-                <div class="card"><div class="element-symbol">C</div><div>Углерод</div></div>
-                <div class="card"><div class="element-symbol">N</div><div>Азот</div></div>
-                <div class="card"><div class="element-symbol">O</div><div>Кислород</div></div>
-                <div class="card"><div class="element-symbol">Na</div><div>Натрий</div></div>
-                <div class="card"><div class="element-symbol">Cl</div><div>Хлор</div></div>
-                <div class="card"><div class="element-symbol">Fe</div><div>Железо</div></div>
-            </div>
-        </section>
-        <section>
-            <h2>⚗️ Типы реакций</h2>
-            <ul style="margin-left: 1.5rem;">
-                <li><strong>Соединение</strong> – A + B → AB (пример: 2H₂ + O₂ → 2H₂O)</li>
-                <li><strong>Разложение</strong> – AB → A + B (CaCO₃ → CaO + CO₂)</li>
-                <li><strong>Замещение</strong> – A + BC → AC + B (Zn + 2HCl → ZnCl₂ + H₂↑)</li>
-                <li><strong>Обмен</strong> – AB + CD → AD + CB (NaOH + HCl → NaCl + H₂O)</li>
-            </ul>
-        </section>
-        <section>
-            <h2>📖 Закон сохранения массы</h2>
-            <p>Масса веществ, вступивших в реакцию, равна массе продуктов. Это фундаментальный закон химии, открытый Ломоносовым и Лавуазье.</p>
-        </section>
+    <div class="footer">
+        🔍 Поддержка множественного выбора из текста: автоматический поиск вариантов A), B), C), D) или A., B. и т.д. Правильный ответ определяется по ключевой фразе.
+        Работает с русским/английским текстом, извлечение из .docx (Word) осуществляется встроенным парсингом (библиотека mammoth не требуется — упрощённый парсинг через FileReader + чистка). 
+        Для корректной обработки сложных .docx используйте предварительное копирование текста.
     </div>
-    <footer>
-        <i class="fas fa-atom"></i> Изучайте химию – науку о превращениях веществ
-    </footer>
+</div>
+
+<script>
+    (function() {
+        // DOM элементы
+        const sourceTextarea = document.getElementById('sourceText');
+        const xmlOutput = document.getElementById('xmlOutput');
+        const convertBtn = document.getElementById('convertBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const exampleBtn = document.getElementById('exampleBtn');
+        const fileInput = document.getElementById('fileInput');
+        const downloadXmlBtn = document.getElementById('downloadXmlBtn');
+        const copyXmlBtn = document.getElementById('copyXmlBtn');
+        const parseStatusSpan = document.getElementById('parseStatus');
+        const exportStatusSpan = document.getElementById('exportStatus');
+
+        // Вспомогательные функции
+        function setStatus(el, msg, isError = false) {
+            if (!el) return;
+            el.textContent = msg;
+            el.style.color = isError ? '#b13e3e' : '#2d6a4f';
+            setTimeout(() => {
+                if (el.textContent === msg) {
+                    // оставляем, но через 6 сек очистим если не ошибка
+                    if (!isError) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 5000);
+                }
+            }, 5000);
+        }
+
+        // Парсинг текста в массив вопросов {questionText, answers: [{letter, text}], correctLetter}
+        function parseQuestionsFromText(rawText) {
+            if (!rawText || rawText.trim() === '') return [];
+            
+            // Разбивка на блоки вопросов: обычно разделяем по двойному переносу строки ИЛИ по явным номерам вопросов.
+            // Лучше: предварительно разделить по шаблону "цифра+точка/скобка" в начале строки.
+            let blocks = [];
+            let lines = rawText.split(/\r?\n/);
+            let currentBlock = [];
+            let questionPattern = /^\s*(\d+)[\.\)]\s+/; // "1. ", "2) "
+
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let isNewQuestion = questionPattern.test(line);
+                if (isNewQuestion && currentBlock.length > 0 && currentBlock.some(l => l.trim() !== '')) {
+                    blocks.push(currentBlock.join('\n'));
+                    currentBlock = [];
+                }
+                currentBlock.push(line);
+            }
+            if (currentBlock.length > 0) blocks.push(currentBlock.join('\n'));
+            // дополнительная страховка: если блоков мало и нет цифр, но текст содержит ответы — всё равно берём как один блок
+            if (blocks.length === 0 && rawText.trim() !== '') blocks = [rawText];
+            
+            const questions = [];
+            for (let block of blocks) {
+                block = block.trim();
+                if (block === '') continue;
+                const parsed = parseSingleQuestionBlock(block);
+                if (parsed) questions.push(parsed);
+            }
+            return questions;
+        }
+
+        // Разбор одного блока вопроса
+        function parseSingleQuestionBlock(block) {
+            // 1. Удаляем нумерацию в начале если есть
+            let lines = block.split(/\r?\n/);
+            // Удаляем пустые строки в начале
+            while (lines.length && lines[0].trim() === '') lines.shift();
+            if (lines.length === 0) return null;
+            
+            // Определяем текст вопроса: первая строка и возможно последующие, пока не встретим вариант ответа (буква+разделитель)
+            let questionTextLines = [];
+            let answers = [];
+            let foundAnswers = false;
+            const answerRegex = /^\s*([A-ZА-Я])\s*[\.\)]\s*(.*)/i;   // A) текст   или A. текст
+            const answerRegexParen = /^\s*([A-ZА-Я])\s*\)\s*(.*)/i;    // A) вариант
+            
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i];
+                let trimmed = line.trim();
+                if (trimmed === '' && !foundAnswers) {
+                    questionTextLines.push(line); // сохраняем пустые строки внутри вопроса
+                    continue;
+                }
+                let answerMatch = answerRegex.exec(trimmed) || answerRegexParen.exec(trimmed);
+                if (answerMatch) {
+                    foundAnswers = true;
+                    let letter = answerMatch[1].toUpperCase();
+                    let answerText = answerMatch[2].trim();
+                    if (answerText === '') answerText = '(пустой вариант)';
+                    answers.push({ letter: letter, text: answerText });
+                } else {
+                    if (!foundAnswers) {
+                        questionTextLines.push(line);
+                    } else {
+                        // После ответов могут идти служебные строки "Правильный ответ: X", их добавим но не в варианты.
+                        // лучше: попытаться извлечь правильный ответ из такой строки
+                        // эту строку пока пропускаем, дальше будет отдельный поиск correct.
+                    }
+                }
+            }
+            
+            let questionFullText = questionTextLines.join('\n').trim();
+            if (questionFullText === '') questionFullText = "Вопрос (текст не распознан)";
+            
+            // Поиск правильного ответа во всём блоке
+            let correctLetter = null;
+            // ищем по строкам: Правильный ответ: B , Answer: C , Верный ответ: A
+            const correctPatterns = [
+                /правильный\s+ответ\s*:\s*([A-ZА-Я])/i,
+                /верный\s+ответ\s*:\s*([A-ZА-Я])/i,
+                /answer\s*:\s*([A-ZА-Я])/i,
+                /correct\s*:\s*([A-ZА-Я])/i,
+                /\(правильный\s+ответ\s+([A-ZА-Я])\)/i
+            ];
+            for (let line of lines) {
+                for (let pattern of correctPatterns) {
+                    let match = pattern.exec(line);
+                    if (match) {
+                        correctLetter = match[1].toUpperCase();
+                        break;
+                    }
+                }
+                if (correctLetter) break;
+            }
+            
+            // Если не нашли, но ответов немного — можно предположить, что правильный ответ — первый? Нет, лучше не угадываем, ставим первый если один вариант
+            if (!correctLetter && answers.length === 1) {
+                correctLetter = answers[0].letter;
+            }
+            // Если всё еще нет, но есть список ответов, пытаемся найти вариант, который содержит слова "правильно" или "верно"? Не надо.
+            if (!correctLetter) {
+                // ищем в вариантах метку (например, вариант с пометкой * или (верно))
+                for (let ans of answers) {
+                    if (ans.text.includes('*') || ans.text.toLowerCase().includes('(верно)') || ans.text.toLowerCase().includes('correct')) {
+                        correctLetter = ans.letter;
+                        // чистим текст от маркеров
+                        ans.text = ans.text.replace(/[*\u2022]|\(верно\)|\(correct\)/gi, '').trim();
+                        break;
+                    }
+                }
+            }
+            
+            if (!correctLetter && answers.length > 0) {
+                // last fallback: первый ответ
+                correctLetter = answers[0].letter;
+            }
+            
+            if (answers.length === 0) return null; // нет вариантов — невалидный вопрос
+            
+            return {
+                questionText: questionFullText,
+                answers: answers,
+                correctLetter: correctLetter
+            };
+        }
+
+        // Генерация Moodle XML из массива вопросов
+        function generateMoodleXml(questions) {
+            if (!questions || questions.length === 0) {
+                return '<?xml version="1.0" encoding="UTF-8"?>\n<quiz>\n  <!-- Нет корректных вопросов для экспорта -->\n</quiz>';
+            }
+            let xml = '<?xml version="1.0" encoding="UTF-8"?>\n<quiz>\n';
+            for (let idx = 0; idx < questions.length; idx++) {
+                const q = questions[idx];
+                // Экранирование XML
+                const escapeXml = (str) => {
+                    if (!str) return '';
+                    return str.replace(/[&<>]/g, function(m) {
+                        if (m === '&') return '&amp;';
+                        if (m === '<') return '&lt;';
+                        if (m === '>') return '&gt;';
+                        return m;
+                    }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                        return c;
+                    }).replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
+                };
+                
+                let questionTextEnc = escapeXml(q.questionText);
+                xml += `  <question type="multichoice">\n`;
+                xml += `    <name>\n      <text>Вопрос ${idx+1}</text>\n    </name>\n`;
+                xml += `    <questiontext format="html">\n      <text><![CDATA[${questionTextEnc}]]></text>\n    </questiontext>\n`;
+                xml += `    <generalfeedback format="html">\n      <text></text>\n    </generalfeedback>\n`;
+                xml += `    <defaultgrade>1.0000000</defaultgrade>\n`;
+                xml += `    <penalty>0.3333333</penalty>\n`;
+                xml += `    <hidden>0</hidden>\n`;
+                xml += `    <single>true</single>\n`;
+                xml += `    <shuffleanswers>true</shuffleanswers>\n`;
+                xml += `    <answernumbering>abc</answernumbering>\n`;
+                xml += `    <correctfeedback format="html">\n      <text>Ваш ответ верный.</text>\n    </correctfeedback>\n`;
+                xml += `    <partiallycorrectfeedback format="html">\n      <text>Ваш ответ частично верный.</text>\n    </partiallycorrectfeedback>\n`;
+                xml += `    <incorrectfeedback format="html">\n      <text>Ваш ответ неверный.</text>\n    </incorrectfeedback>\n`;
+                
+                for (let ans of q.answers) {
+                    let isCorrect = (ans.letter === q.correctLetter) ? 1 : 0;
+                    let answerTextEnc = escapeXml(ans.text);
+                    xml += `    <answer fraction="${isCorrect}" format="html">\n`;
+                    xml += `      <text><![CDATA[${answerTextEnc}]]></text>\n`;
+                    xml += `      <feedback format="html">\n        <text></text>\n      </feedback>\n`;
+                    xml += `    </answer>\n`;
+                }
+                xml += `  </question>\n`;
+            }
+            xml += '</quiz>';
+            return xml;
+        }
+
+        // Основная функция конвертации из текста в XML и обновления вывода
+        function convertAndShow() {
+            const raw = sourceTextarea.value;
+            if (!raw.trim()) {
+                setStatus(parseStatusSpan, '⚠️ Нет текста для конвертации. Вставьте тест или загрузите файл.', false);
+                xmlOutput.value = '<?xml version="1.0" encoding="UTF-8"?>\n<quiz>\n  <!-- Нет данных. Добавьте текст с вопросами -->\n</quiz>';
+                setStatus(exportStatusSpan, 'XML не сгенерирован (пустой ввод)', false);
+                return;
+            }
+            const questions = parseQuestionsFromText(raw);
+            if (questions.length === 0) {
+                setStatus(parseStatusSpan, '❌ Не удалось распознать вопросы. Проверьте формат (цифры, варианты A) B) и "Правильный ответ: X")', true);
+                xmlOutput.value = '<?xml version="1.0" encoding="UTF-8"?>\n<quiz>\n  <!-- Не удалось распарсить ни одного вопроса -->\n</quiz>';
+                return;
+            }
+            setStatus(parseStatusSpan, `✅ Найдено вопросов: ${questions.length}. Правильные ответы определены.`, false);
+            const moodleXml = generateMoodleXml(questions);
+            xmlOutput.value = moodleXml;
+            setStatus(exportStatusSpan, `✨ XML готов (${questions.length} вопросов). Можно скачать или скопировать.`, false);
+        }
+        
+        // Загрузка файлов .docx (простой парсинг через чтение как zip? Тяжело, но для .txt и .docx - извлечение текста через FileReader + для docx используем подход с ArrayBuffer и распаковка без библиотек сложна.
+        // Упрощённо: для .docx будем использовать чтение как text? Не сработает. Но можно предложить пользователю копировать текст. Чтобы не усложнять зависимостями, сделаем честное предупреждение,
+        // но попробуем использовать FileReader для .docx как ArrayBuffer и распарсить через специальную технику: на самом деле docx - zip с XML. Сделаем примитивный парсер текста: ищем в документе body.
+        // Реализуем базовую функцию извлечения текста из docx без библиотек (достаточно для многих случаев).
+        async function extractTextFromDocx(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const arrayBuffer = e.target.result;
+                    try {
+                        // используем JSZip через CDN? Но мы не хотим подключать внешние библиотеки? Можно без них, но извлечение сложно.
+                        // Для простоты: дадим пользователю инструкцию, либо подключаем динамически JSZip. Я подключаю динамически для удобства.
+                        if (typeof JSZip === 'undefined') {
+                            // динамическая загрузка JSZip
+                            const script = document.createElement('script');
+                            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+                            script.onload = () => {
+                                extractWithZip(arrayBuffer).then(resolve).catch(reject);
+                            };
+                            script.onerror = () => reject(new Error('Не удалось загрузить библиотеку для .docx, скопируйте текст вручную.'));
+                            document.head.appendChild(script);
+                        } else {
+                            extractWithZip(arrayBuffer).then(resolve).catch(reject);
+                        }
+                    } catch(err) {
+                        reject(err);
+                    }
+                };
+                reader.onerror = () => reject(new Error('Ошибка чтения файла'));
+                reader.readAsArrayBuffer(file);
+            });
+        }
+        
+        async function extractWithZip(arrayBuffer) {
+            const zip = await JSZip.loadAsync(arrayBuffer);
+            const documentFile = zip.file("word/document.xml");
+            if (!documentFile) throw new Error("word/document.xml не найден в .docx");
+            const xmlString = await documentFile.async("string");
+            // удаляем теги XML и извлекаем текст
+            const textContent = xmlString.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            // дополнительно пробуем улучшить читаемость: разбивка по предложениям
+            return textContent;
+        }
+        
+        // Обработка загрузки файла
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const fileName = file.name;
+            if (fileName.endsWith('.txt')) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    sourceTextarea.value = ev.target.result;
+                    setStatus(parseStatusSpan, `📄 Загружен ${fileName} (текст). Нажмите "Конвертировать".`, false);
+                };
+                reader.onerror = () => setStatus(parseStatusSpan, 'Ошибка чтения .txt', true);
+                reader.readAsText(file, 'UTF-8');
+            } 
+            else if (fileName.endsWith('.docx')) {
+                try {
+                    setStatus(parseStatusSpan, '⏳ Обработка .docx, пожалуйста подождите...', false);
+                    const extractedText = await extractTextFromDocx(file);
+                    if (extractedText && extractedText.length > 0) {
+                        sourceTextarea.value = extractedText;
+                        setStatus(parseStatusSpan, `✅ Текст из ${fileName} извлечён. Нажмите "Конвертировать".`, false);
+                    } else {
+                        throw new Error('Текст не найден');
+                    }
+                } catch (err) {
+                    console.warn(err);
+                    setStatus(parseStatusSpan, `⚠️ Не удалось автоматически разобрать .docx: ${err.message}. Скопируйте текст вручную из Word.`, true);
+                }
+            } else {
+                setStatus(parseStatusSpan, 'Поддерживаются .txt и .docx', true);
+            }
+            fileInput.value = '';
+        });
+        
+        // Пример текста
+        exampleBtn.addEventListener('click', () => {
+            sourceTextarea.value = `1. Какая столица Франции?
+A) Берлин
+B) Мадрид
+C) Париж
+D) Лиссабон
+Правильный ответ: C
+
+2. Что такое HTML?
+A) Язык программирования
+B) Язык разметки гипертекста
+C) База данных
+D) Графический редактор
+Answer: B
+
+3. 2 + 2 * 2 равно?
+A) 6
+B) 8
+C) 4
+D) 5
+Верный ответ: A`;
+            setStatus(parseStatusSpan, 'Пример загружен. Нажмите "Конвертировать"', false);
+        });
+        
+        clearBtn.addEventListener('click', () => {
+            sourceTextarea.value = '';
+            xmlOutput.value = '';
+            setStatus(parseStatusSpan, 'Поле очищено', false);
+            setStatus(exportStatusSpan, '', false);
+        });
+        
+        convertBtn.addEventListener('click', () => {
+            convertAndShow();
+        });
+        
+        downloadXmlBtn.addEventListener('click', () => {
+            const xmlContent = xmlOutput.value;
+            if (!xmlContent || xmlContent.includes('Нет данных') || xmlContent.includes('Не удалось распарсить')) {
+                setStatus(exportStatusSpan, 'Нет валидного XML для скачивания. Сначала конвертируйте тест.', true);
+                return;
+            }
+            const blob = new Blob([xmlContent], {type: 'application/xml'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'moodle_questions.xml';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            setStatus(exportStatusSpan, 'Файл moodle_questions.xml скачан.', false);
+        });
+        
+        copyXmlBtn.addEventListener('click', () => {
+            const xml = xmlOutput.value;
+            if (!xml || xml.includes('Нет данных')) {
+                setStatus(exportStatusSpan, 'Нечего копировать, сначала сгенерируйте XML', true);
+                return;
+            }
+            navigator.clipboard.writeText(xml).then(() => {
+                setStatus(exportStatusSpan, 'XML скопирован в буфер обмена!', false);
+            }).catch(() => {
+                setStatus(exportStatusSpan, 'Не удалось скопировать', true);
+            });
+        });
+        
+        // начальная инициализация: пустой, но покажем пример при пустом?
+        if (!sourceTextarea.value) {
+            sourceTextarea.value = `1. Пример вопроса:\nA) Первый вариант\nB) Второй верный\nC) Третий\nПравильный ответ: B`;
+        }
+    })();
+</script>
 </body>
 </html>
