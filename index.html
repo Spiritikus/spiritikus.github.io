@@ -2,446 +2,120 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Химический экзамен | Тестовые задания по химии</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Химия – главная</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e9f0f9 0%, #dee8f2 100%);
-            padding: 2rem 1rem;
-            color: #0a2a38;
+            background: linear-gradient(145deg, #f5f7fc 0%, #eef2f8 100%);
+            color: #1a2c3e;
+            line-height: 1.5;
         }
-
-        /* главный контейнер */
-        .quiz-page {
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* шапка тестовой страницы */
-        .test-header {
-            background: linear-gradient(115deg, #0b3b4f, #0f4c64);
-            border-radius: 2rem;
-            padding: 2rem 2rem 1.8rem;
-            margin-bottom: 2rem;
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+        .hero {
+            background: linear-gradient(135deg, #0b2b3b, #123e54);
             color: white;
-            box-shadow: 0 20px 30px -15px rgba(0,0,0,0.2);
+            padding: 2.5rem 0;
+            border-radius: 0 0 2rem 2rem;
+            margin-bottom: 2rem;
             text-align: center;
         }
-
-        .test-header h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #fff, #c9ecff);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-        }
-
-        .test-header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin-top: 1.5rem;
-            background: rgba(255,255,255,0.15);
-            backdrop-filter: blur(8px);
-            border-radius: 60px;
-            padding: 0.5rem 1.5rem;
-        }
-
-        .badge-count {
-            background: #ffb347;
-            padding: 0.4rem 1rem;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .back-home {
-            background: rgba(255,255,255,0.25);
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 40px;
+        .hero h1 { font-size: 2.8rem; margin-bottom: 0.5rem; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
+        .btn-test {
+            display: inline-block;
+            background: #ff8c1a;
             color: white;
-            font-weight: 500;
-            cursor: pointer;
+            padding: 0.8rem 2rem;
+            border-radius: 60px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 1.2rem;
             transition: 0.2s;
-            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-
-        .back-home i {
-            margin-right: 6px;
-        }
-
-        .back-home:hover {
-            background: rgba(255,255,255,0.45);
-            transform: scale(1.02);
-        }
-
-        /* карточка вопроса */
-        .question-card {
+        .btn-test i { margin-right: 8px; }
+        .btn-test:hover { background: #e67e10; transform: translateY(-2px); }
+        section {
             background: white;
-            border-radius: 1.6rem;
-            margin-bottom: 1.5rem;
-            padding: 1.5rem 1.8rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-            transition: 0.2s ease;
+            border-radius: 1.5rem;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.05);
+        }
+        h2 {
+            font-size: 1.8rem;
+            border-left: 5px solid #2c7da0;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+            color: #0f3b4f;
+        }
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .card {
+            background: #f9fbfe;
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
             border: 1px solid #e2edf2;
         }
-
-        .question-card:hover {
-            box-shadow: 0 15px 25px -12px rgba(0, 0, 0, 0.1);
-        }
-
-        .q-title {
-            display: flex;
-            align-items: baseline;
-            gap: 12px;
-            margin-bottom: 1.2rem;
-            flex-wrap: wrap;
-        }
-
-        .q-num {
-            background: #2c7da0;
-            color: white;
-            font-weight: 700;
-            width: 32px;
-            height: 32px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 30px;
-            font-size: 0.9rem;
-        }
-
-        .question-text {
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #0f3b4f;
-            line-height: 1.4;
-            flex: 1;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-            margin-left: 2rem;
-            margin-top: 0.8rem;
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.3rem 0;
-            transition: 0.1s;
-        }
-
-        .option input {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #2c7da0;
-        }
-
-        .option label {
-            cursor: pointer;
-            font-weight: 500;
-            color: #1c4e66;
-        }
-
-        /* кнопка проверки */
-        .submit-area {
-            text-align: center;
-            margin: 2rem 0 1.5rem;
-        }
-
-        .btn-check {
-            background: linear-gradient(95deg, #1e6f8f, #0f5775);
-            border: none;
-            padding: 1rem 2.5rem;
-            font-size: 1.2rem;
-            font-weight: 700;
-            border-radius: 60px;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn-check:hover {
-            background: linear-gradient(95deg, #0f5c7a, #0a465e);
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -8px rgba(0,0,0,0.25);
-        }
-
-        /* Результат */
-        .result-panel {
-            background: #fef9e6;
-            border-radius: 1.8rem;
-            padding: 1.4rem 2rem;
-            margin-top: 1.8rem;
-            margin-bottom: 1.2rem;
-            border-left: 8px solid #ffb347;
-            transition: 0.2s;
-        }
-
-        .result-stats {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .detailed-feedback {
-            background: #f0f6fa;
-            border-radius: 1.2rem;
-            padding: 1rem 1.5rem;
-            font-size: 0.9rem;
-            margin-top: 1rem;
-        }
-
-        .correct {
-            color: #1f8a4c;
-            font-weight: 600;
-        }
-        .wrong {
-            color: #c73e1d;
-            font-weight: 600;
-        }
-
+        .element-symbol { font-size: 2rem; font-weight: 800; font-family: monospace; }
         footer {
+            background: #0f2c38;
+            color: #bbb;
             text-align: center;
-            margin-top: 2.5rem;
-            padding: 1rem;
-            font-size: 0.8rem;
-            color: #2a5f7a;
+            padding: 1.5rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            margin-top: 2rem;
         }
-
-        @media (max-width: 700px) {
-            .test-header h1 { font-size: 1.9rem; }
-            .question-card { padding: 1.2rem; }
-            .options { margin-left: 0.5rem; }
-            .q-num { width: 28px; height: 28px; font-size: 0.8rem;}
-            .question-text { font-size: 1rem; }
-        }
+        @media (max-width: 700px) { .hero h1 { font-size: 2rem; } }
     </style>
 </head>
 <body>
-    <div class="quiz-page">
-        <div class="test-header">
-            <h1><i class="fas fa-dna"></i> Химический практикум</h1>
-            <p>15 тестовых заданий по общей и неорганической химии. Проверьте свои знания!</p>
-            <div class="stats-bar">
-                <div class="badge-count"><i class="fas fa-flask"></i> Всего вопросов: 15</div>
-                <button class="back-home" id="backToMainBtn"><i class="fas fa-home"></i> Вернуться на главную</button>
-            </div>
+    <div class="hero">
+        <div class="container">
+            <h1><i class="fas fa-flask"></i> Химическая станция</h1>
+            <p>Основы неорганической химии • Периодическая система • Реакции</p>
+            <a href="quiz.html" class="btn-test"><i class="fas fa-puzzle-piece"></i> Пройти тест →</a>
         </div>
-
-        <form id="quizForm">
-            <!-- Блок вопросов будет сгенерирован через JS, чтобы было удобно поддерживать массив -->
-        </form>
-
-        <div class="submit-area">
-            <button type="button" class="btn-check" id="submitQuizBtn"><i class="fas fa-check-double"></i> Завершить тест и проверить</button>
-        </div>
-
-        <div id="resultBlock" style="display: none;"></div>
-        <footer>🧪 Выберите вариант ответа для каждого вопроса. После проверки вы увидите подробный разбор.</footer>
     </div>
-
-    <script>
-        // Банк вопросов (15 штук) по химии — от основ до реакций
-        const questionsBank = [
-            { text: "Какой химический элемент имеет символ 'K'?", options: ["Калий", "Кальций", "Кремний", "Кобальт"], correct: 0 },
-            { text: "Формула серной кислоты:", options: ["H₂SO₃", "H₂SO₄", "H₂S", "SO₃"], correct: 1 },
-            { text: "Какое из веществ является щёлочью?", options: ["NaOH", "Cu(OH)₂", "Fe(OH)₂", "Al(OH)₃"], correct: 0 },
-            { text: "Реакция 2Mg + O₂ → 2MgO относится к типу:", options: ["Разложение", "Соединение", "Замещение", "Обмен"], correct: 1 },
-            { text: "Чему равно значение pH в чистой воде (25°C)?", options: ["0", "7", "14", "1"], correct: 1 },
-            { text: "Какой металл при комнатной температуре находится в жидком состоянии?", options: ["Ртуть", "Галлий", "Бром (неметалл)", "Цезий"], correct: 0 },
-            { text: "Кислотный оксид — это:", options: ["CO₂", "Na₂O", "CaO", "MgO"], correct: 0 },
-            { text: "Какое из перечисленных соединений является основанием?", options: ["HCl", "HNO₃", "KOH", "NaCl"], correct: 2 },
-            { text: "Уравнение реакции нейтрализации:", options: ["NaOH + HCl → NaCl + H₂O", "Zn + H₂SO₄ → ZnSO₄ + H₂", "CaCO₃ → CaO + CO₂", "2H₂ + O₂ → 2H₂O"], correct: 0 },
-            { text: "Какой газ выделяется при взаимодействии карбоната кальция с соляной кислотой?", options: ["Кислород", "Водород", "Углекислый газ", "Азот"], correct: 2 },
-            { text: "Степень окисления хлора в соединении NaClO₃ (хлорат натрия):", options: ["+1", "+3", "+5", "+7"], correct: 2 },
-            { text: "Электронная конфигурация 1s²2s²2p⁶3s¹ соответствует элементу:", options: ["Натрий", "Магний", "Алюминий", "Калий"], correct: 0 },
-            { text: "Какой индикатор в кислой среде становится красным?", options: ["Фенолфталеин", "Лакмус", "Метилоранж (в кислой — красный)", "Все вышеперечисленные"], correct: 3 },  // универсальный ответ
-            { text: "Формула известняка (мела):", options: ["CaO", "Ca(OH)₂", "CaCO₃", "CO₂"], correct: 2 },
-            { text: "В молекуле воды (H₂O) химическая связь:", options: ["Ионная", "Ковалентная полярная", "Металлическая", "Водородная (межмолекулярная)"], correct: 1 }
-        ];
-        
-        // Дополним корректировку для индикатора (ответ 3: все, но достаточно выбрать вариант)
-        // Примечание: в 13-м вопросе корректный ответ - лакмус (красный) и метилоранж тоже. Но сделаем вариант "Все вышеперечисленные" верным. 
-        // В массиве для вопроса 13 верный индекс 3 (Все вышеперечисленные)
-        
-        let userAnswers = new Array(questionsBank.length).fill(null);
-        
-        // Функция отрисовки формы
-        function renderQuiz() {
-            const container = document.getElementById('quizForm');
-            if (!container) return;
-            let html = '';
-            questionsBank.forEach((q, idx) => {
-                const qNumber = idx + 1;
-                html += `
-                    <div class="question-card" data-qidx="${idx}">
-                        <div class="q-title">
-                            <span class="q-num">${qNumber}</span>
-                            <span class="question-text">${q.text}</span>
-                        </div>
-                        <div class="options" id="options-${idx}">
-                `;
-                q.options.forEach((opt, optIdx) => {
-                    const checkedAttr = (userAnswers[idx] === optIdx) ? 'checked' : '';
-                    html += `
-                        <label class="option">
-                            <input type="radio" name="q${idx}" value="${optIdx}" ${checkedAttr} data-qidx="${idx}" data-optidx="${optIdx}">
-                            <span>${String.fromCharCode(65+optIdx)}. ${opt}</span>
-                        </label>
-                    `;
-                });
-                html += `</div></div>`;
-            });
-            container.innerHTML = html;
-            
-            // Вешаем обработчики на радиокнопки
-            for (let i = 0; i < questionsBank.length; i++) {
-                const radios = document.querySelectorAll(`input[name="q${i}"]`);
-                radios.forEach(radio => {
-                    radio.addEventListener('change', (e) => {
-                        const qIdx = parseInt(e.target.getAttribute('data-qidx'));
-                        const val = parseInt(e.target.value);
-                        if (!isNaN(qIdx)) {
-                            userAnswers[qIdx] = val;
-                        }
-                    });
-                });
-            }
-        }
-        
-        // Функция проверки теста
-        function evaluateTest() {
-            let totalCorrect = 0;
-            const details = [];
-            for (let i = 0; i < questionsBank.length; i++) {
-                const userChoice = userAnswers[i];
-                const isCorrect = (userChoice !== null && userChoice === questionsBank[i].correct);
-                if (isCorrect) totalCorrect++;
-                
-                let userAnswerText = "Не выбран";
-                if (userChoice !== null) {
-                    userAnswerText = questionsBank[i].options[userChoice];
-                }
-                const correctAnswerText = questionsBank[i].options[questionsBank[i].correct];
-                
-                details.push({
-                    question: questionsBank[i].text,
-                    userAnswer: userAnswerText,
-                    correctAnswer: correctAnswerText,
-                    isCorrect: isCorrect
-                });
-            }
-            
-            const percent = Math.round((totalCorrect / questionsBank.length) * 100);
-            let message = "";
-            let icon = "";
-            if (percent >= 85) {
-                message = "Отлично! Вы блестяще знаете химию! 🧪✨";
-                icon = "🏆";
-            } else if (percent >= 60) {
-                message = "Хороший результат! Но есть над чем поработать. 📚";
-                icon = "👍";
-            } else {
-                message = "Стоит повторить теорию. Вернитесь на главную страницу и изучите разделы. 💪";
-                icon = "📖";
-            }
-            
-            // Генерация детализированного блока
-            let detailsHtml = `<div class="result-panel" id="resultPanel">
-                <div class="result-stats">${icon} Ваш результат: ${totalCorrect} из ${questionsBank.length} (${percent}%)</div>
-                <div><i class="fas fa-chart-simple"></i> ${message}</div>
-                <div class="detailed-feedback">
-                    <strong><i class="fas fa-list-ul"></i> Разбор вопросов:</strong><br><br>`;
-            details.forEach((item, idx) => {
-                const statusClass = item.isCorrect ? "correct" : "wrong";
-                const statusIcon = item.isCorrect ? "✅" : "❌";
-                detailsHtml += `<div style="margin-bottom: 1rem; border-bottom: 1px solid #d3e2ed; padding-bottom: 0.5rem;">
-                    <strong>${idx+1}. ${item.question}</strong><br>
-                    ${statusIcon} <span class="${statusClass}">Ваш ответ: ${item.userAnswer}</span><br>
-                    <i class="fas fa-lightbulb" style="color:#2c7da0;"></i> <strong>Правильный ответ:</strong> ${item.correctAnswer}
-                </div>`;
-            });
-            detailsHtml += `</div></div>`;
-            
-            const resultBlock = document.getElementById('resultBlock');
-            resultBlock.style.display = 'block';
-            resultBlock.innerHTML = detailsHtml;
-            
-            // Прокрутка к результатам
-            resultBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-        
-        // Сброс/инициализация
-        renderQuiz();
-        
-        // Кнопка проверки
-        const submitBtn = document.getElementById('submitQuizBtn');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', () => {
-                // Перед проверкой проверим, есть ли хоть какой-то ответ. Но можно и без предупреждения — просто подсветим.
-                let anyAnswered = userAnswers.some(ans => ans !== null);
-                if (!anyAnswered) {
-                    alert("Пожалуйста, выберите хотя бы один вариант ответа перед проверкой.");
-                    return;
-                }
-                evaluateTest();
-            });
-        }
-        
-        // Кнопка возврата на главную страницу (веб-сайт, который открыт ранее – перенаправление)
-        const backBtn = document.getElementById('backToMainBtn');
-        if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                // Возврат на предыдущую страницу (если есть история, либо предложим закрыть)
-                if (document.referrer && document.referrer.includes(window.location.hostname) === false) {
-                    window.location.href = '/';   // fallback: домашняя страница этого же домена
-                } else {
-                    window.history.back();
-                }
-                // Альтернативно можно вывести ссылку на главную страницу, но проще history.back
-            });
-        }
-        
-        // Дополнительно: восстановление сохраненных ответов при переключении радиокнопок
-        // уже реализовано в renderQuiz и event change
-        
-        // Кнопка для быстрой очистки не нужна, но можно добавить подсказку
-        console.log("Страница тестов загружена. Всего вопросов:", questionsBank.length);
-    </script>
+    <div class="container">
+        <section>
+            <h2>🧪 10 ключевых элементов</h2>
+            <div class="grid-cards">
+                <div class="card"><div class="element-symbol">H</div><div>Водород</div></div>
+                <div class="card"><div class="element-symbol">He</div><div>Гелий</div></div>
+                <div class="card"><div class="element-symbol">C</div><div>Углерод</div></div>
+                <div class="card"><div class="element-symbol">N</div><div>Азот</div></div>
+                <div class="card"><div class="element-symbol">O</div><div>Кислород</div></div>
+                <div class="card"><div class="element-symbol">Na</div><div>Натрий</div></div>
+                <div class="card"><div class="element-symbol">Cl</div><div>Хлор</div></div>
+                <div class="card"><div class="element-symbol">Fe</div><div>Железо</div></div>
+            </div>
+        </section>
+        <section>
+            <h2>⚗️ Типы реакций</h2>
+            <ul style="margin-left: 1.5rem;">
+                <li><strong>Соединение</strong> – A + B → AB (пример: 2H₂ + O₂ → 2H₂O)</li>
+                <li><strong>Разложение</strong> – AB → A + B (CaCO₃ → CaO + CO₂)</li>
+                <li><strong>Замещение</strong> – A + BC → AC + B (Zn + 2HCl → ZnCl₂ + H₂↑)</li>
+                <li><strong>Обмен</strong> – AB + CD → AD + CB (NaOH + HCl → NaCl + H₂O)</li>
+            </ul>
+        </section>
+        <section>
+            <h2>📖 Закон сохранения массы</h2>
+            <p>Масса веществ, вступивших в реакцию, равна массе продуктов. Это фундаментальный закон химии, открытый Ломоносовым и Лавуазье.</p>
+        </section>
+    </div>
+    <footer>
+        <i class="fas fa-atom"></i> Изучайте химию – науку о превращениях веществ
+    </footer>
 </body>
 </html>
-
